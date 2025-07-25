@@ -61,7 +61,8 @@ PROCEDURE Color(fg, bg, unknown: Integer);
 BEGIN
  TextColor := fg;
  TextBgColor := bg;
- OffscreenImage.Canvas.Pen.Color := ColorToTColor(fg);
+
+ // needed in ClrScr
  OffscreenImage.Canvas.Brush.Color := ColorToTColor(bg);
 END;
 

@@ -122,6 +122,7 @@ begin
   GetPixel := ColorFromTColor(OffscreenImage.Canvas.Pixels[x, GetMaxY - y]);
 end;
 
+// original CGRAPH.PAS algorithm
 PROCEDURE Ellips(x,y,dx,dy: Integer);
 VAR xx,yy,mx,ky,tx,ty,st,nac: Integer;
 BEGIN
