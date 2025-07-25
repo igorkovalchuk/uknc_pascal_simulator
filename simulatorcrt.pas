@@ -158,7 +158,10 @@ begin
       KeyPressedState := False;
     end
   else
-    Delay(100);
+    begin
+      KeyPressed := False;
+      Delay(100);
+    end;
 end;
 
 end.

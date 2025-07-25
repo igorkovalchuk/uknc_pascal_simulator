@@ -14,6 +14,13 @@ const  EmptyPixel = 0;
        FilledPixel = 254;
        MarkedPixel = 1;
 
+// define how many pixels should be set, before refreshing the screen,
+// during the FloodFill.
+// for a slow computer, like single core Celeron 1.7GHz,
+// this value may be 50 pixels, for example.
+// for the fast development mode use 10000 pixels or more.
+const  UpdateScreenPeriod = 50;
+
 type
   ScreenArray = array[0..GetMaxX,0..GetMaxY] of Byte;
 
@@ -148,6 +155,7 @@ BEGIN
  Delay(1000);
 END;
 
+// UKNC uses a better algorithm than this one
 procedure FloodFill(x, y, fillColor, borderColor: Integer);
 var
   color: TFPColor;
@@ -197,30 +205,39 @@ begin
                    OffscreenImage.Canvas.DrawPixel(px, py, color);
 
                    Inc(counter);
-                   if counter = 15 then
+                   if counter = UpdateScreenPeriod then
                      begin
                        counter := 0;
                        Delay(1); // display/animate changes
                      end;
 
-                   if screen[px + 1,py] = EmptyPixel then
-                     screen[px + 1, py] := MarkedPixel;
-                   if screen[px - 1,py] = EmptyPixel then
-                     screen[px - 1, py] := MarkedPixel;
-                   if screen[px,py + 1] = EmptyPixel then
-                     screen[px, py + 1] := MarkedPixel;
-                   if screen[px,py - 1] = EmptyPixel then
-                     screen[px, py - 1] := MarkedPixel;
+                   if (px < GetMaxX) and (screen[px + 1, py] = EmptyPixel) then
+                     begin
+                       screen[px + 1, py] := MarkedPixel;
+                       if maxX < (px + 1) then
+                         maxX := px + 1;
+                     end;
 
-                   if minX > (px - 1) then
-                     minX := px - 1;
-                   if maxX < (px + 1) then
-                     maxX := px + 1;
+                   if (px > 0) and (screen[px - 1, py] = EmptyPixel) then
+                     begin
+                       screen[px - 1, py] := MarkedPixel;
+                       if minX > (px - 1) then
+                         minX := px - 1;
+                     end;
 
-                   if minY > (py - 1) then
-                     minY := py - 1;
-                   if maxY < (py + 1) then
-                     maxY := py + 1;
+                   if (py < GetMaxY) and (screen[px, py + 1] = EmptyPixel) then
+                     begin
+                       screen[px, py + 1] := MarkedPixel;
+                       if maxY < (py + 1) then
+                         maxY := py + 1;
+                     end;
+
+                   if (py > 0) and (screen[px, py - 1] = EmptyPixel) then
+                     begin
+                       screen[px, py - 1] := MarkedPixel;
+                       if minY > (py - 1) then
+                         minY := py - 1;
+                     end;
 
                  end;
              end;

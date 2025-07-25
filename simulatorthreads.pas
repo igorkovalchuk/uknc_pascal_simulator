@@ -23,7 +23,7 @@ begin
 
   while not finished do
     begin
-      Delay(330);
+      Delay(330); // three times per second
       Image1.Invalidate;
     end;
 
