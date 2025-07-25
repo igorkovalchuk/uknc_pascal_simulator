@@ -1,0 +1,22 @@
+object Form1: TForm1
+  Left = 329
+  Height = 305
+  Top = 175
+  Width = 657
+  Caption = 'Simulator'
+  ClientHeight = 305
+  ClientWidth = 657
+  OnClick = FormClick
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
+  OnKeyUp = FormKeyUp
+  LCLVersion = '2.2.6.0'
+  object Image1: TImage
+    Left = 8
+    Height = 288
+    Top = 8
+    Width = 640
+    OnPaint = Image1Paint
+  end
+end

@@ -1,0 +1,13 @@
+
+MIT
+
+With exceptions: 
+
+the Ellips algorithm has been copied from the original Pascal/Fast v2.2-3 CGRAPH.PAS code.
+Probably had a commercial license.
+(c) 1992-1995 А.Е.Москаль, Ю.Э.Фрадкин, Санкт-Петербург
+It is freely available today, for example, on pdp-11.ru web site.
+
+SimulatorGraphics.pas represents the CGRAPH.PAS API;
+its signatures mirror the CGRAPH.PAS signatures,
+some trivial code is the same as in the CGRAPH.PAS
