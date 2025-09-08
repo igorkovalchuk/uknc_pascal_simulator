@@ -22,6 +22,7 @@ var
   GetTextY    : Integer;
   TextColor   : 0..7;
   TextBgColor : 0..7;
+  ScreenBgColor: 0..7;
 
 var
   KeyPressedState: Boolean = False;
@@ -32,7 +33,7 @@ var
 
 procedure preInit;
 
-PROCEDURE Color(fg, bg, unknown: Integer);
+PROCEDURE Color(textFg, textBg, screenBg: Integer);
 procedure ClrScr;
 PROCEDURE GotoXY(x, y: Integer);
 
@@ -57,13 +58,14 @@ begin
   fs.Free;
 end;
 
-PROCEDURE Color(fg, bg, unknown: Integer);
+PROCEDURE Color(textFg, textBg, screenBg: Integer);
 BEGIN
- TextColor := fg;
- TextBgColor := bg;
+ TextColor := textFg;
+ TextBgColor := textBg;
+ ScreenBgColor := screenBg;
 
  // needed in ClrScr
- OffscreenImage.Canvas.Brush.Color := ColorToTColor(bg);
+ OffscreenImage.Canvas.Brush.Color := ColorToTColor(ScreenBgColor);
 END;
 
 procedure ClrScr;
