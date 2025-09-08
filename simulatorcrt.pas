@@ -26,6 +26,7 @@ var
 
 var
   KeyPressedState: Boolean = False;
+  KeyPressedChar: Char = '?';
 
 var
   ukncfont: array[0..2815] of byte; // 256 characters, one char per 11 bytes
@@ -41,6 +42,7 @@ procedure Write(s : string);
 procedure Writeln(s : string);
 
 function KeyPressed: Boolean;
+function ReadKey: Char;
 
 procedure IterateUTF8Codepoints(const AnUTF8String: string);
 
@@ -158,11 +160,27 @@ begin
   if KeyPressedState then
     begin
       KeyPressed := True;
-      KeyPressedState := False;
     end
   else
     begin
       KeyPressed := False;
+      Delay(100); // without this delay it can get stuck
+    end;
+end;
+
+// For debugging purposes, returns '?' after 1 minute of inactivity
+function ReadKey: Char;
+var
+  i: Integer;
+begin
+  ReadKey := '?';
+  for i := 1 to 600 do
+    begin
+      if KeyPressedState then
+        begin
+          ReadKey := KeyPressedChar;
+          break;
+        end;
       Delay(100);
     end;
 end;
