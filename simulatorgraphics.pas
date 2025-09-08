@@ -48,7 +48,7 @@ PROCEDURE PutPixel(x,y: Integer);
 function GetPixel(x,y: Integer) : Integer;
 PROCEDURE Ellips(x,y,dx,dy: Integer);
 PROCEDURE InitGraph;
-procedure FloodFill(x,y,fillColor,borderColor: Integer);
+procedure FloodFill(x0,y0,fillColor,borderColor: Integer);
 
 implementation
 
@@ -138,10 +138,10 @@ BEGIN
   ky := ky+st DIV nac;
   IF ky>y THEN ky:=y;
   mx:=Round(Sqrt(1-Sqr((y-ky)/dy))*dx);
-  Line(tx,    GetMaxY - ty,        x+mx, GetMaxY - ky);
-  Line(xx-tx, GetMaxY - ty,        x-mx, GetMaxY - ky);
-  Line(tx,    GetMaxY - (yy - ty), x+mx, GetMaxY - (yy-ky));
-  Line(xx-tx, GetMaxY - (yy - ty), x-mx, GetMaxY - (yy-ky));
+  Line(tx,    ty,    x+mx, ky);
+  Line(xx-tx, ty,    x-mx, ky);
+  Line(tx,    yy-ty, x+mx, yy-ky);
+  Line(xx-tx, yy-ty, x-mx, yy-ky);
   tx := x+mx;
   ty := ky
  UNTIL ky=y;
@@ -157,8 +157,9 @@ BEGIN
 END;
 
 // UKNC uses a better algorithm than this one
-procedure FloodFill(x, y, fillColor, borderColor: Integer);
+procedure FloodFill(x0, y0, fillColor, borderColor: Integer);
 var
+  x, y: Integer;
   color: TFPColor;
   border: TFPColor;
   px, py: Integer;
@@ -170,6 +171,9 @@ var
   maxY: Integer = 0;
   counter: Integer = 0;
 begin
+  x := x0;
+  y := GetMaxY - y0;
+
   color := TColorToFPColor(ColorToTColor(fillColor));
   border := TColorToFPColor(ColorToTColor(borderColor));
 
