@@ -280,5 +280,11 @@ begin
   Color(White, Dblue, Dblue);
   ClrScr;
 
+  GotoXY(1, 1);
+  writeln('Tunnel like hall');
+  writeln('Picture from The Hobbit (1982)');
+  writeln('Illustrated by Kent Rees');
+  writeln('Data from https://richcarl.github.io/hobbitgfx/');
+
 end.
 
