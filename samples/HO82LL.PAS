@@ -13,35 +13,20 @@ var
   px: Integer;
   py: Integer;
 
-type
-  Point = record
-            x, y, c : Integer;
-          end;
-
-const pixelsLength = 3;
-
-const
-  pixels: array[1..pixelsLength] of Point = (
-    { see HO82HO.PAS for details }
-    (x:45; y:69; c:0),
-    (x:369; y:75; c:0),
-    (x:459; y:75; c:0)
-  );
-
-procedure line1(x0, y0, x1, y1: Integer);
+procedure line1(x0, y0, x1, y1: Real);
 begin
 
   if (Abs(px - x0) <= 1) and (Abs(py - y0) <= 1) then
       begin
-        lineto(startX + x0 * multiplier, GetMaxY - (startY + y0 * multiplier));
+        lineto(Round(startX + x0 * multiplier), Round(GetMaxY - (startY + y0 * multiplier)));
       end;
 
   SetColor(0);
-  line(startX + x0 * multiplier, GetMaxY - (startY + y0 * multiplier),
-       startX + x1 * multiplier, GetMaxY - (startY + y1 * multiplier));
+  line(Round(startX + x0 * multiplier), Round(GetMaxY - (startY + y0 * multiplier)),
+       Round(startX + x1 * multiplier), Round(GetMaxY - (startY + y1 * multiplier)));
 
-  px := x1;
-  py := y1;
+  px := Round(x1);
+  py := Round(y1);
 end;
 
 procedure fill1(x0, y0, color, border: Integer);
@@ -49,25 +34,12 @@ begin
   FloodFill(startX + x0 * multiplier, GetMaxY - (startY + y0 * multiplier), color, border);
 end;
 
-procedure fix;
-var
-  i: Integer;
-  p: Point;
-begin
-  for i := 1 to pixelsLength do
-    begin
-      p := pixels[i];
-      SetColor(p.c);
-      PutPixel(startX + p.x, GetMaxY - (startY + p.y));
-    end;
-end;
-
 procedure frame(color: Integer);
 var
   x0, x1, y0, y1: Integer;
 begin
   SetColor(color);
-  { 256 × 192 ZX Spectrum window size }
+  { 256 * 192 ZX Spectrum window size }
   x0 := startX - 1;
   x1 := startX + 256 * 2 - 1;
   y0 := GetMaxY - (startY + 128 * 2) - 1; { bottom }
@@ -77,6 +49,46 @@ begin
   Line(x1, y0, x1, y1); { vertical line }
   Line(x0, y0, x1, y0); { horizontal line }
   Line(x0, y1, x1, y1); { horizontal line }
+end;
+
+procedure extendedLine(x0: Real;
+                       y0: Real;
+                       x1: Real;
+                       y1: Real;
+                       start: Boolean);
+{ 'start' means we have to continue this line starting from x0, y0 point }
+{ 'end' - from x1, y1 }
+var
+  direction: Integer;
+  dx, dy: Real;
+begin
+  dx := x1 - x0;
+  dy := y1 - y0;
+  if Abs(dx) > Abs(dy) then
+      begin
+        dy := dy / dx;
+        dx := 1;
+      end
+  else
+      begin
+        dx := dx / dy;
+        dy := 1;
+      end;
+
+  if start then
+    begin
+      if x1 > x0 then direction := -1 else direction := 1;
+      x0 := x0 + dx * direction;
+      y0 := y0 + dy * direction;
+    end
+  else
+    begin
+      if x1 > x0 then direction := 1 else direction := -1;
+      x1 := x1 + dx * direction;
+      y1 := y1 + dy * direction;
+    end;
+
+  line1(x0, y0, x1, y1);
 end;
 
 begin
@@ -109,19 +121,18 @@ begin
   line1(60, 30, 34, 34);
   line1(33, 34, 7, 36);
   line1(6, 36, 0, 36);
-  line1(22, 34, 0, 27);
-  line1(184, 37, 158, 29);
+  extendedLine(22, 34, 0, 27, true);
+  extendedLine(184, 37, 158, 29, true);
   line1(157, 28, 131, 26);
   line1(130, 26, 104, 29);
-  line1(230, 37, 255, 34);
-  line1(197, 70, 200, 44);
+  extendedLine(230, 37, 255, 34, true);
+
+  line1(197, 70, 200, 44); { tree }
   line1(197, 59, 194, 45);
   line1(200, 53, 205, 43);
   line1(203, 49, 206, 48);
   line1(196, 49, 197, 46);
   line1(195, 55, 192, 54);
-
-  fix;
 
   frame(Black);
 
@@ -134,7 +145,6 @@ begin
   Color(White, Dblue, Dblue);
   ClrScr;
 
-  GotoXY(1, 1);
   writeln('Lonelands');
   writeln('Picture from The Hobbit (1982)');
   writeln('Illustrated by Kent Rees');
