@@ -7,7 +7,7 @@ PROGRAM HO82NP;
 
 const multiplier = 2;
 const startX = 64; {(640 - 256*2) / 2}
-const startY = 0;
+const startY = 4;
 
 var
   px: Integer;
