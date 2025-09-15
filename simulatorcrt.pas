@@ -73,6 +73,7 @@ END;
 procedure ClrScr;
 begin
   OffscreenImage.Canvas.FillRect(0, 0, OffscreenImage.Width, OffscreenImage.Height);
+  GotoXY(1, 1);
 end;
 
 PROCEDURE GotoXY(x, y: Integer);
@@ -88,9 +89,11 @@ var
   chByte, row, bit: Integer;
   bg, fg: TFPColor;
 begin
+  x0 := x0 - 1; // x0 should be greater or equal to 1
+  y0 := y0 - 1; // y0 should be greater or equal to 1
   bg := TColorToFPColor(ColorToTColor(bgColor));
   fg := TColorToFPColor(ColorToTColor(fgColor));
-  y := (y0 - 1) * CharHeight; // y0 should be greater or equal to 1
+  y := y0 * CharHeight;
   start := index * CharHeight;
   for row:= 0 to (CharHeight - 1) do
     begin
@@ -128,7 +131,7 @@ begin
         end
       else
         begin
-          GetTextX := 0;
+          GetTextX := 1;
           GetTextY := GetTextY + 1; // todo: vertical scroll
         end;
     end;
@@ -137,7 +140,7 @@ end;
 procedure Writeln(s : string);
 begin
   Write(s);
-  GetTextX := 0;
+  GetTextX := 1;
   GetTextY := GetTextY + 1; // todo: vertical scroll
 end;
 
