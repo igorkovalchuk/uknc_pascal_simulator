@@ -80,7 +80,6 @@ end;
 procedure TForm1.FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   SimulatorCrt.KeyPressedState := False;
-  SimulatorCrt.KeyPressedChar := '?';
 end;
 
 procedure TForm1.FormClick(Sender: TObject);

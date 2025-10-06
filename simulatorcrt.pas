@@ -163,7 +163,6 @@ begin
   if KeyPressedState then
     begin
       KeyPressed := True;
-      KeyPressedState := False;
     end
   else
     begin
@@ -183,7 +182,6 @@ begin
       if KeyPressedState then
         begin
           ReadKey := KeyPressedChar;
-          KeyPressedState := False;
           break;
         end;
       Delay(100);
