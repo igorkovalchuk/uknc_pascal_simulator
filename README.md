@@ -24,3 +24,8 @@ PAS1.SAV, версія Pascal/Fast 2-2.3 взято з УКНЦ архіву hob
 
 Див. скомпільовані приклади: https://igorkovalchuk.github.io/
 
+Експорт даних hobbitgfx: https://github.com/igorkovalchuk/hobbitgfx/tree/console-log-data
+
+Pascal/Fast програму потрібно писати в programcode.pas, а для компіляції на емуляторі УКНЦ виділити вручну в окремий файл і скопіювати на диск за допомогою 
+https://github.com/nzeemin/ukncbtl-utils/wiki/rt11dsk
+
